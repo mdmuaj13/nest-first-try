@@ -39,7 +39,7 @@ export class ProductsService {
   remove(id: string) {
     let [_, index] = this.findProductById(id);
     this.products.splice(index,1);
-    return `Product ${id} deleted successfully.`
+    return `Product ${id} deleted successfully`
   }
 
   private findProductById(id: string) : [Product, number] {
