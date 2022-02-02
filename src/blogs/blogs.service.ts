@@ -16,6 +16,7 @@ export class BlogsService {
 
 
 
+
   create(blog: CreateBlogDto) {
     try {
       const b = this.blogRepository.save(blog);
@@ -25,45 +26,76 @@ export class BlogsService {
     }
   }
 
+
+
   findAll()  {
-    return  this.blogRepository.find();
-    // return blogs;
+    return  this.blogRepository.find({
+      where: [
+        { deletedAt: null }
+      ],
+      order: {
+        id: "ASC"
+      }
+    });
   }
+
+
 
   async findOne(id: number) {
     try {
-      const blog = await this.blogRepository.findOne(id);
+      const blog = await this.blogRepository.findOne(id, {
+        where: [
+          { deletedAt: null }
+        ]
+      });
       if(!blog) {
         throw new NotFoundException("Blog not found");      
       }
       return blog;
     } catch (error) {
-      throw new NotFoundException();      
+      throw new NotFoundException("Blog not found with specific identifier!");      
     }
   }
 
+
+
+
+
   async update(id: number, updateBlogDto: UpdateBlogDto) {
     try {
-      await this.blogRepository.update({ id }, updateBlogDto);
-      const blog =  await this.blogRepository.findOne(id);
-      return blog;
+      // await this.blogRepository.update({ id }, updateBlogDto);
+      // const blog =  await this.blogRepository.findOne(id);
+      // return blog;
+      const blog = await this.findOne(id);
+      return await this.blogRepository.save({
+        ...blog,
+        ...updateBlogDto
+      });
+
     } catch (error) {
       throw new NotFoundException("Blog not found");      
     }
   }
 
+
+
   async remove(id: number) {
     try {
-      let blog = await this.blogRepository.update({ id }, { deletedAt: new Date().toISOString() } );
-
+      const blog = await this.findOne(id);
       if(!blog) {
         throw new NotFoundException("Blog not found with specific identifier.");
       }
-      let b = await this.blogRepository.findOne(id);
 
-      return b;
+      return await this.blogRepository.save({
+        ...blog,
+        deletedAt: new Date().toISOString()
+      });
+
     } catch (error) {
       throw new NotFoundException("Blog not found");
     }
   }
+
+
+
 }
