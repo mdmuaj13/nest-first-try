@@ -6,16 +6,24 @@ import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './transform.interceptor';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [BlogsModule, ProductsModule, DatabaseModule],
-  controllers: [AppController],
-  providers: [
-    AppService , 
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: TransformInterceptor
-    }
-],
+	imports: [
+		BlogsModule,
+		ProductsModule,
+		DatabaseModule,
+		AuthModule,
+		UsersModule,
+	],
+	controllers: [AppController],
+	providers: [
+		AppService,
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: TransformInterceptor,
+		},
+	],
 })
 export class AppModule {}
