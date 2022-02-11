@@ -4,6 +4,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { Blog } from './entities/blog.interface';
 
+
 @Controller('blogs')
 export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
@@ -18,12 +19,12 @@ export class BlogsController {
   @Get()
   async findAll() {
     const blogs = await this.blogsService.findAll();
-    return  { data : blogs } 
+    return  { data : blogs, message: "Successfully received" } 
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return { data: await this.blogsService.findOne(id) };
+    return { data: await this.blogsService.findOne(id), message: "Successfully received" };
   }
 
   @Put(':id')

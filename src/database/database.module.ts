@@ -12,7 +12,7 @@ import { BlogEntity } from 'src/blogs/entities/blog.entity';
         port: 5432,
         username: 'postgres',
         password: '123',
-        database: 'nest',
+        database: 'pet',
         // entities: ['**/*.entity{.ts, .js}'],
         entities: [BlogEntity],
         // autoLoadEntities: true,

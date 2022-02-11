@@ -1,7 +1,7 @@
-import { IsString, IsInt, IsNotEmpty } from 'class-validator';
+import { IsString, IsInt, IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreateBlogDto {   
-    @IsNotEmpty()
+    @IsEmail()
     title: string;
 
     @IsNotEmpty()
