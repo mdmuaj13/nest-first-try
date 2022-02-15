@@ -3,8 +3,7 @@ import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { BlogEntity } from './entities/blog.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { Blog } from './entities/blog.interface';
+import { Repository } from 'typeorm';
 
 
 
@@ -49,7 +48,7 @@ export class BlogsService {
         ]
       });
       if(!blog) {
-        throw new NotFoundException("Blog not found");      
+        throw new NotFoundException("Blog not found");
       }
       return blog;
     } catch (error) {

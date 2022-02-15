@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 @Entity('users')
 export class UserEntity {
 	@PrimaryGeneratedColumn()
@@ -19,16 +19,18 @@ export class UserEntity {
 	@Column({ type: 'timestamp', nullable: true })
 	isVerified: Date;
 
-	@Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+	@Column({ nullable: true })
+	socialType: string;
+
+	@Column({ nullable: true })
+	socialId: string;
+
+	@CreateDateColumn()
 	createdAt: Date;
 
-	@Column({
-		type: 'timestamp',
-		default: () => 'CURRENT_TIMESTAMP',
-		onUpdate: 'CURRENT_TIMESTAMP',
-	})
+	@UpdateDateColumn()
 	updatedAt: Date;
 
-	@Column({ type: 'timestamp', nullable: true })
+	@DeleteDateColumn()
 	deletedAt: Date;
 }

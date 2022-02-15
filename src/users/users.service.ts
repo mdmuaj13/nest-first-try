@@ -1,19 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
+
+
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.userRepository.create(createUserDto);
+    await this.userRepository.save(user);
+    return { data: user, message: 'User created successfully' };
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.userRepository.find();
+    return { data: users, message: 'Users found successfully' };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.userRepository.findOne(id);
+
+    if( !user ) {
+      throw new NotFoundException(`User not found with specific identifier.`);
+    }
+
+    return { data: user, message: 'User found successfully' };
+  }
+
+  async findByUsername(username: string) {
+    const user = await this.userRepository.findOne({
+      where: { email: username },
+    });
+    console.log(user);
+
+    if( !user ) {
+      throw new NotFoundException(`User not found with specific username.`);
+    }
+
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

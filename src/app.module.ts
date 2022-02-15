@@ -6,16 +6,16 @@ import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './transform.interceptor';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
 	imports: [
 		BlogsModule,
 		ProductsModule,
 		DatabaseModule,
-		AuthModule,
 		UsersModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [
